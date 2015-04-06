@@ -1,0 +1,15 @@
+{
+    "name": "fieldtrip-camera-va",
+    "version": "0.0.1",
+    "homepage": "https://github.com/edina/fieldtrip-geofences",
+    "description": "Camera-va is a Fieldtrip Open plugin for capturing a picture with the vertical align.",
+    "main": "src/www/js/camera-va.js",
+    "keywords": [
+        "fieldtrip-open",
+        "camera",
+        "align"
+    ],
+    "ignore": [
+        "**/.*"
+    ]
+}
