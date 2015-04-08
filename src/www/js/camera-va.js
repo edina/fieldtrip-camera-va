@@ -5,6 +5,7 @@
 define(function(require) {
     var widgets = require('widgets');
     var records = require('records');
+    var cordova = cordova;
 
     // If the plugin is not installed skip this widget
     if (!(cordova && cordova.plugins && cordova.plugins.cameravaplugin)) {
