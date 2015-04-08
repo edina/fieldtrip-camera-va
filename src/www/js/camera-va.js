@@ -5,6 +5,7 @@
 define(function(require) {
     var widgets = require('widgets');
     var records = require('records');
+    var file = require('file');
 
     // If the plugin is not installed skip this widget
     if (!(cordova && cordova.plugins && cordova.plugins.cameravaplugin)) {
@@ -37,13 +38,19 @@ define(function(require) {
      * Invoke the cordova plugin
      * @param elImage element where to display the image and put the data
      */
-    var takePhoto = function(elImage) {
+    var takePhoto = function(id) {
         cordova.plugins.cameravaplugin
             .photoWithVA(
                 function(data) {
-                    //TODO: Move the image and put the data in the element, as data?
-                    console.log(data);
-                    showImage(0, data);
+
+                    file.moveTo({
+                        'path': "file://"+data.FileLocation,
+                        'to': records.getAssetsDir(records.IMAGE_TYPE_NAME),
+                        'success': function(newEntry){
+                            showImage(id, newEntry.toURL());
+                            sessionStorage.setItem("cameraViewAngle", JSON.stringify(data["View Angle"]));
+                        }
+                    });
                 },
                 function(err) {
                     console.error(err);
@@ -63,19 +70,16 @@ define(function(require) {
 
         var initialize = function(index, element) {
             console.log("initialize camera-va");
-            var $el = $(element);
-            var elImg = $el.append('<img />');
+
             $.each($('input[capture=camera-va]'), function(index, input){
                 $(input).parent().append(records.renderCameraExtras(index, cameraLOSTemplate));
             });
 
-            //$el.find('input[type=button]').on('vclick', function() {
-            //    takePhoto(elImg);
-            //});
             // listen for take photo click
-            $('.annotate-image-va-take').click($.proxy(function(event){
-                takePhoto(elImg);
-            }, this));
+            $('.annotate-image-va-take').click(function(){
+                var id = $(this).parents('.image-chooser').attr('id');
+                takePhoto(id);
+            });
         };
 
         var validate = function(html) {
@@ -89,15 +93,20 @@ define(function(require) {
 
         var serialize = function(element) {
             var $el = $(element);
-            var values = [];
+            var value;
             var label;
 
             // TODO: get the value from the element
+            var src = $el.find('.annotate-image img').attr('src');
+            if(src){
+                value = src;
+            }
+            label = $el.find('label[for="' + $el.attr('id') + '"]').text();
 
             return {
                 serialize: true,
                 label: label,
-                value: values
+                value: value
             };
         };
 
