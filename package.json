@@ -1,6 +1,6 @@
 {
   "name": "fieldtrip-camera-va",
-  "version": "0.0.1",
+  "version": "0.1.1",
   "description": "A fieldtrip plugin for using the cordova camera va plugin",
   "main": "src/www/js/camera-va.js",
   "scripts": {
