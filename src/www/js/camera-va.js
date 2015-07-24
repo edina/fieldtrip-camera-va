@@ -73,7 +73,7 @@ define(function(require) {
             console.log("initialize camera-va");
 
             $.each($('input[capture=camera-va]'), function(index, input){
-                $(input).parent().append(records.renderCameraExtras(index, cameraLOSTemplate));
+                $(input).parent().append(records.renderCameraExtras(index, 'image', cameraLOSTemplate));
             });
 
             // listen for take photo click
